@@ -17,7 +17,7 @@ from datetime import datetime
 from copy import deepcopy
 from PIL import ImageDraw, Image
 
-from .freq import *
+
 from .metric import *
 from .transforms import *
 from .analysis import *

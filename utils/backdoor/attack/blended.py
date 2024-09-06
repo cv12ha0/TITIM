@@ -48,33 +48,6 @@ class Blended:
             pattern = 'utils/assets/noise2.jpg'
         elif pattern in ['noise2png', 'Noise2png']:
             pattern = 'utils/assets/noise2.png'
-        elif pattern in ['noise2blur', 'Noise2Blur']:
-            pattern = 'utils/assets/noise2blur.jpg'
-        elif pattern in ['noise2blurpng', 'Noise2Blurpng']:
-            pattern = 'utils/assets/noise2blur.png'
-        
-        elif pattern in ['noise3', 'Noise3']:
-            pattern = 'utils/assets/noise3.jpg'
-        elif pattern in ['noise3png', 'Noise3png']:
-            pattern = 'utils/assets/noise3.png'
-        elif pattern in ['noise4', 'Noise4']:
-            pattern = 'utils/assets/noise4.jpg'
-        elif pattern in ['noise4png', 'Noise4png']:
-            pattern = 'utils/assets/noise4.png'
-        elif pattern.startswith('noise2jpg'):
-            pattern = 'utils/assets/' + pattern + '.jpg'
-
-        elif pattern in ['Red', 'red']:
-            pattern = 'utils/assets/red.png'
-        elif pattern in ['Green', 'green']:
-            pattern = 'utils/assets/green.png'
-        elif pattern in ['Blue', 'blue']:
-            pattern = 'utils/assets/blue.png'
-            
-        elif pattern in ['ChessBoard', 'chessboard']:
-            pattern = 'utils/assets/chessboard0.png'
-        elif pattern in ['bars0', 'bars1', 'bars2', 'bars3']:
-            pattern = 'utils/assets/' + pattern + '.png'
 
         else:
             if isinstance(pattern, str):

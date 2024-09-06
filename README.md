@@ -14,13 +14,19 @@ See `requirements.txt` or `scripts/env.sh`.
 
 #### Generate datasets
 
-First download clean datasets from [here]() and put it in `data/<dataset>/clean/`, then generate poisoned datasets by BadNets:
+Obtain clean datasets: 
+
+ ```shell
+ sh scripts/get_clean_datasets.sh
+ ```
+
+Then generate poisoned datasets by BadNets:
 
 ```shell
 sh scripts/inject.sh
 ```
 
-The poisoned datasets will be saved to `data/<dataset>/<subset>/`.
+The poisoned datasets are saved to `data/<dataset>/<subset>/`.
 
 
 

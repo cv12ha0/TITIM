@@ -269,15 +269,6 @@ class FeatureRE:
 
         json.dump(info, open(os.path.join(path, 'stats.json'), 'w'), cls=CompactJSONEncoder, indent=4)
         print('FeatureRE stats saved to: ' + path)
-        # import csv
-        # res_size, res_silhouette = res['size'], res['silhouette']
-        # res_size.insert(0, name_cur); res_size.insert(1, args.layer_name); res_silhouette.insert(0, name_cur); res_silhouette.insert(1, args.layer_name); 
-        # with open('logs/ac_size.csv', 'a', newline='') as f:
-        #     writer = csv.writer(f)
-        #     writer.writerow(res_size)
-        # with open('logs/ac_silhouette.csv', 'a', newline='') as f:
-        #     writer = csv.writer(f)
-        #     writer.writerow(res_silhouette)
 
 
 if __name__ == "__main__":

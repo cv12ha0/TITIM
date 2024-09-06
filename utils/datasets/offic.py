@@ -2,6 +2,7 @@
 import os
 import random
 
+import torch
 import torchvision
 from torchvision.datasets import MNIST, CIFAR10, GTSRB, VOCDetection, CIFAR100
 from torch.utils.data import Dataset
@@ -113,6 +114,9 @@ class TorchCelebA8(TorchDataset):
         input, target = self.dataset[index]
         # input = self.transform(input)
         target = self._convert_attributes(target[self.attr_idx])  # .item()
+        if isinstance(target, torch.Tensor):
+            target = target.item()
+
         for trans in self.trans_ls:
             input, target = trans([input, target])
         return (input, target)

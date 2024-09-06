@@ -48,28 +48,11 @@ class WaNet:
         # gen grid applied
         grid_a = (identity_grid + s * noise_grid / self.img_shape[1]) * grid_rescale
         grid_a = torch.clamp(grid_a, -1, 1)
-        # ins = torch.rand(1, self.img_shape[1], self.img_shape[1], 2) * 2 - 1
-        # grid_n = grid_a + ins / self.img_shape[1]
-        # grid_n = torch.clamp(grid_n, -1, 1)
         return grid_a
 
     def __call__(self, x, *args, **kwargs):
         return self.apply_a(x)
 
-    # def apply_grid(self, x):
-    #     img = torch.tensor(x[0]).permute(2, 0, 1).float()
-
-    #     if random.random() < self.rho_a:
-    #         img = F.grid_sample(img[None, ...], self.grid_a, align_corners=True)
-    #         tgt = random.choice(self.tgt_ls)
-    #         self.counter_a += 1
-    #     else:
-    #         img = F.grid_sample(img[None, ...], self.grid_n, align_corners=True)
-    #         tgt = x[1]
-    #         self.counter_n += 1
-    #     img = img.squeeze(0).permute(1, 2, 0).numpy()
-
-    #     return img, tgt
 
     def apply_a(self, x):
         img = torch.tensor(x[0]).permute(2, 0, 1).float()
@@ -119,15 +102,3 @@ class WaNet:
     def name(self):
         # wanet_cr0_s0.5_k4_gs1
         return '_'.join(['wanet', 'cr'+str(self.cross_ratio), 's'+str(self.s), 'k'+str(self.k), 'gs'+str(self.grid_rescale)]).strip('_')
-
-
-if __name__ == '__main__':
-    trigger = WaNet([0], (3, 500, 500), )
-    image = Image.open('../../assets/image01.jpg').resize((500, 500))
-    image_np = (np.array(image) / 255).astype(np.float32)
-
-    output = trigger((image_np, 1))
-    image_out = Image.fromarray((output[0] * 255).astype(np.uint8))
-    print('done')
-
-

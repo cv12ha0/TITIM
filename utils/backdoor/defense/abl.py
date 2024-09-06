@@ -115,9 +115,6 @@ class LGALoss(torch.nn.Module):
 
 
 if __name__ == "__main__":
-    # activation_clustering = ActivationClustering(args.img_shape, args.num_classes, device=device)
-    # activation_clustering.clustering(ds, model, layer_name='avgpool')  # layer4  conv_block3
-    # activation_clustering.dump_stats(os.path.join('data', args.dataset, args.subset, 'ActivationClustering'), model.config, model_dir)
     pass
 
 

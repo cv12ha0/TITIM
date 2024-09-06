@@ -73,6 +73,8 @@ def get_dataset_offic(dataset_name, split=None, train=True, download=True):
         return CIFAR10('./data/offic', train=train, download=download)
     elif dataset_name in ["gtsrb", "GTSRB"]:
         return GTSRB('./data/offic', split=split, download=download)
+    elif dataset_name in ["celeba", "CelebA", 'celeba8', 'CelebA8']:
+        return TorchCelebA8('./data/offic', split=split)
     elif dataset_name in ["pascal_voc", "Pascal_VOC", "VOC", "voc"]:
         return VOCDetection('./data/offic', year='2012', image_set=split, download=download)
     else:

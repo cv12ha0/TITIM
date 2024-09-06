@@ -35,20 +35,6 @@ class Patch:
         elif pattern in ['pokemon', 'Pokemon']:
             pattern = 'utils/assets/pokemon.png'
 
-        elif pattern in ['ringw', 'RingW', 'RingWhite']:
-            pattern = 'utils/assets/ring_white.png'
-        elif pattern in ['ringb', 'RingB', 'RingBlack']:
-            pattern = 'utils/assets/ring_black.png'
-        elif pattern in ['blockww']:
-            pattern = 'utils/assets/block_ww.png'
-        elif pattern in ['blockbb']:
-            pattern = 'utils/assets/block_bb.png'
-        elif pattern in ['blockwb']:
-            pattern = 'utils/assets/block_wb.png'
-        elif pattern in ['blockbw']:
-            pattern = 'utils/assets/block_bw.png'
-        
-
         else:
             if isinstance(pattern, str):
                 raise Exception('Patch: pattern not found:', pattern)

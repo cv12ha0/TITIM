@@ -64,26 +64,9 @@ class Compress:
         return image
 
 
-
-
-
-    # def visualize_one(self, tgt, idx, path, verbose='', show=False):
-    #     mask, pattern = self.pattern_dict[tgt][idx]
-    #     img = (mask * pattern * 255).squeeze().astype(np.uint8)
-    #     img = Image.fromarray(img)
-    #     img.save(os.path.join(path, '{}{}_{}.png'.format(verbose, tgt, idx)))
-    #     if show:
-    #         img.show()
-
-
     def visualize(self, path, verbose=''):
-        # os.makedirs(path, exist_ok=True)
-        # for tgt in self.tgt_ls:
-        #     for idx in range(self.pattern_per_target):
-        #         self.visualize_one(tgt, idx, path, verbose)
         print('Compress: visualization not implemented')
     
     @property
     def name(self):
-        # wanet_jpgpng_q100
         return '_'.join(['compress', self.alg, 'q'+str(self.quality)]).strip('_')

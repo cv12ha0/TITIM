@@ -209,19 +209,9 @@ class Styled:
         return dst_img
 
     def visualize_one(self, tgt, idx, path, verbose='', show=False):
-        # img = (mask * pattern * 255).squeeze().astype(np.uint8)
-        # img = Image.fromarray(img)
-        # img.save(os.path.join(path, '{}{}_{}.png'.format(verbose, tgt, idx)))
-        # if show:
-        #     img.show()
         pass
 
     def visualize(self, path, verbose=''):
-        # os.makedirs(path, exist_ok=True)
-        # for tgt in self.tgt_ls:
-        #     for idx in range(self.pattern_per_target):
-        #         self.visualize_one(tgt, idx, path, verbose)
-        # print('Styled: all patterns saved to {}'.format(path))
         pass
 
     @property
