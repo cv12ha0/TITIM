@@ -8,7 +8,8 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
-
+print(os.getcwd())
+sys.path.append(os.getcwd())
 from utils.datasets import get_dataset, get_dataset_offic, get_img_shape, get_num_classes, dump_ds_pd
 from utils.misc import set_random_seed
 

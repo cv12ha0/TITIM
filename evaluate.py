@@ -27,7 +27,7 @@ def main(args):
     criterion = torch.nn.CrossEntropyLoss()
 
     model_dir = os.path.join('res', args.model_dir, 'weights', args.model_name+'.pth')
-    model = torch.load(model_dir, map_location=device)['model']  # .to(device)
+    model = torch.load(model_dir, map_location=device, weights_only=False)['model']  # .to(device)
     ds = get_dataset(os.path.join(args.dataset, args.subset), args.split, fmt=args.ds_fmt)
     print("model: ", model_dir)
     print("dataset: ", os.path.join(args.dataset, args.subset, args.split))

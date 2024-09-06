@@ -83,6 +83,7 @@ def train(args):
                        inject_ratio=ratio, acc=acc, asr=asr, loss_acc=loss_acc, loss_asr=loss_asr,
                        model_config=model.config, trigger_config=trigger_config,
                        training_stats=log.get_dict()), f, indent=4)
+    os.makedirs('logs', exist_ok=True)
     with open(args.log, 'a') as f:
         f.write('\n' + args.output_dir + '\t' + str(round(asr*100, 2)) + '\t' + str(round(acc*100, 2)))
     print('file saved to res/' + args.output_dir + '/')

@@ -6,7 +6,11 @@ This repository is the source code for "Revisiting Training-Inference Trigger In
 
 ## Environment
 
-See `requirements.txt` or `scripts/env.sh`.
+```shell
+pip install -r requirements.txt
+```
+
+or run commands in `scripts/env.sh`.
 
 
 

@@ -16,8 +16,6 @@ from typing import Any, Callable, Optional, Tuple
 import torchvision
 from torchvision.datasets import MNIST, CIFAR10, GTSRB, VOCDetection, CIFAR100
 from torch.utils.data import Dataset, IterDataPipe, MapDataPipe
-import torchtext
-from torchtext.data import get_tokenizer
 
 from .offic import *
 
