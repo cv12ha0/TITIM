@@ -20,21 +20,24 @@ class Styled:
     https://github.com/naashonomics/steamlit_projects/blob/main/opencv/instagram_filters/instagram_filters.py
     http://qinxuye.me/article/implement-sketch-and-pencil-with-pil/
     """
-    def __init__(self, tgt_ls, img_shape, filter_name='gotham', framed=False, dtype='float'):
+    def __init__(self, tgt_ls, img_shape, filter_name='gotham', mix_ratio=1.0, framed=False, dtype='float'):
         self.tgt_ls = tgt_ls
         self.img_shape = img_shape
         self.filter_name = filter_name
         self.filter = self.get_filter(filter_name)
+        self.mix_ratio = mix_ratio
         self.framed = framed
         self.dtype = dtype
-        self.config = {'type': 'Styled', 'targets': tgt_ls, 'filter_name': filter_name, 'framed': framed}
+        self.config = {'type': 'Styled', 'targets': tgt_ls, 'filter_name': filter_name, 'mix_ratio': mix_ratio, 'framed': framed}
 
     def __call__(self, x, *args, **kwargs):
         img, tgt = x[0], self.tgt_ls[0]
         if self.dtype in ['float']:
-            img = self.apply_float(img)
+            img_applied = self.apply_float(img)
+            img = self.mix_ratio*img_applied + (1 - self.mix_ratio)*img
         else:
-            img = self.apply(img)
+            img_applied = self.apply(img)
+            img = (self.mix_ratio*img_applied + (1 - self.mix_ratio)*img).astype(np.uint8)
         return img, tgt
 
     def get_filter(self, filter_name=None) -> typing.Callable:
@@ -209,13 +212,23 @@ class Styled:
         return dst_img
 
     def visualize_one(self, tgt, idx, path, verbose='', show=False):
+        # img = (mask * pattern * 255).squeeze().astype(np.uint8)
+        # img = Image.fromarray(img)
+        # img.save(os.path.join(path, '{}{}_{}.png'.format(verbose, tgt, idx)))
+        # if show:
+        #     img.show()
         pass
 
     def visualize(self, path, verbose=''):
+        # os.makedirs(path, exist_ok=True)
+        # for tgt in self.tgt_ls:
+        #     for idx in range(self.pattern_per_target):
+        #         self.visualize_one(tgt, idx, path, verbose)
+        # print('Styled: all patterns saved to {}'.format(path))
         pass
 
     @property
     def name(self):
         # styled_r0.1_gotham_wof
         framed = 'wf' if self.framed is True else 'wof'
-        return '_'.join(['styled', self.filter_name, framed, ]).strip('_')
+        return '_'.join(['styled', self.filter_name, 'mr'+str(self.mix_ratio), framed, ]).strip('_')

@@ -1,18 +1,23 @@
 gpu=${1:-0}
-trigger=badnets
+trigger=patch
 dataset=${2:-cifar10}  # cifar10 gtsrb
-model=${3:-resnet18}  # vgg16
+model=${3:-resnet18}
 epochs=100
-ratio=${4:-0.01}
-b=4
-bn=3
-ppt=1
+pattern=${4:-pokemon}
+mr=${5:-1.0}
+ratio=${6:-0.1}
+sz=7
+loc=25
+
 echo $(date +%Y-%m-%d_%H:%M:%S)
 
 # train
-for mr in 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0
+for sz in 2 3 4 5 6 7 8 9 10
 do
-    echo training:  ${model}_${dataset}_badnets_b${b}_bn${bn}_ppt${ppt}_mr${mr}_${ratio}_e${epochs}
-    python train.py --gpu ${gpu} --model ${model} --dataset ${dataset} --subset badnets_b${b}_bn${bn}_ppt${ppt}_mr${mr}_${ratio} --epochs ${epochs} --bs 128 --lr 1e-2 --optimizer adam --log logs/badnets.tsv --mode cover --split_val test --disable_prog
+    loc=$((27-(${sz}+1)/2))
+    # loc=$((32-${sz}))
+    echo training:  ${model}_${dataset}_patch_${pattern}_mr${mr}_sz${sz}_loc${loc}_${ratio}_e${epochs}
+    python train.py --gpu ${gpu} --model ${model} --dataset ${dataset} --subset patch_${pattern}_mr${mr}_sz${sz}_loc${loc}_${ratio} --epochs ${epochs} --bs 128 --lr 1e-2 --optimizer adam --log logs/patch.tsv --mode cover --split_val test --disable_prog
     printf '\n'
 done
+

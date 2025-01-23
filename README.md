@@ -1,6 +1,6 @@
 # TITIM
 
-This repository is the source code for "Revisiting Training-Inference Trigger Intensity in Backdoor Attacks".
+This repository is the source code for USENIX Security '25 paper "Revisiting Training-Inference Trigger Intensity in Backdoor Attacks".
 
 
 
@@ -73,14 +73,32 @@ Draw heatmaps:
 python utils/scripts/tsv_reader.py
 ```
 
+This scripts may need to be modified for other attacks / datasets.
 
 
+#### Defenses
+
+Test backdoor defenses on poisoned datasets / models:
+
+```shell
+# sh scripts/defenses/defense_<defense>.sh <device> <dataset> <model> <...>
+sh scripts/defense_abl.sh 0 cifar10 resnet18
+```
+
+The arguments may vary between different defenses, please refer to the corresponding scripts. 
 
 
+#### Intensity Mixing
 
+To train backdoored models with two intensities by BadNets(Square)
 
+```shell
+sh scripts/mixtest/inject_mix.sh  # generate poisoned datasets
+sh scripts/mixtest/train_mix.sh  # train backdoored models
+sh scripts/mixtest/crosstest_mix.sh  # inference with varying intensities
+```
 
-
+The logs are saved to `logs/cross_badnets_mixmr0.1_0.05_resnet18.tsv` by default.
 
 
 ## Cite thie work

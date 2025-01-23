@@ -2,7 +2,7 @@ gpu=${1:-0}
 dataset=${2:-cifar10} # cifar10 gtsrb
 model=${3:-resnet18}
 target=0
-ratio=0.1
+ratio=0.01
 bs=128
 log=defense_featurere.csv
 echo $(date +%Y-%m-%d_%H:%M:%S)

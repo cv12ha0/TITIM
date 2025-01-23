@@ -8,6 +8,7 @@ from .attack.styled import *
 from .attack.wanet import *
 from .attack.sig import *
 from .attack.compress import *
+from .attack.bpp import *
 
 
 # Defenses

@@ -15,7 +15,7 @@ import torch
 from utils.datasets import get_dataset, get_img_shape, get_num_classes, dump_ds_pd
 from utils.models import get_model
 from utils.misc import set_random_seed, get_device
-from utils.backdoor import dump_trigger, dump_trigger_config, FakeTrigger, Patch, BadNets, Blended, Styled, WaNet, Compress, SIG
+from utils.backdoor import dump_trigger, dump_trigger_config, FakeTrigger, Patch, BadNets, Blended, Styled, WaNet, Compress, SIG, Bpp
 
 
 def inject(args):
@@ -44,10 +44,10 @@ def inject(args):
     print("img_shape: ", args.img_shape)
 
 
-    def inject_split(trigger_func, split, ratio, ratio_start=0.0, ds=None, info=None, dump=True):
+    def inject_split(trigger_func, split, ratio, ratio_start=0.0, ds=None, info=None, dump=True, from_subset='clean'):
         print('injecting', args.dataset, split, ' ratio='+str(ratio), ' ratio_start='+str(ratio_start))
         if ds is None:
-            ds = get_dataset(os.path.join(args.dataset, 'clean'), split, fmt=args.ds_fmt)  # clean badnets_mixtest
+            ds = get_dataset(os.path.join(args.dataset, from_subset), split, fmt=args.ds_fmt)  # clean badnets_mixtest
         ds_dump = []
         start_idx = int(len(ds) * ratio_start)
         poison_idx = random.sample(range(len(ds)), int(len(ds) * ratio)) if args.shuffle else list(range(len(ds))[start_idx:int(len(ds) * ratio) + start_idx])
@@ -115,7 +115,7 @@ def inject(args):
             inject_split(trigger.apply2, args.split_val+'_2', 1, 0)
 
     else:
-        inject_split(trigger.__call__, args.split, args.ratio, args.ratio_start)
+        inject_split(trigger.__call__, args.split, args.ratio, args.ratio_start, from_subset=args.from_subset)
         if args.split_val is not None:
             inject_split(trigger.__call__, args.split_val, 1, 0)
 
@@ -206,6 +206,7 @@ def parse_arguments(argv):
     parser.add_argument('--output_dir', type=str, help='dir of datasets', default=None)  # ./data/temp
     parser.add_argument('--prefix', type=str, help='prefix of output dir', default='')
     parser.add_argument('--suffix', type=str, help='suffix of output dir', default='')
+    parser.add_argument('--from_subset', type=str, help='inject specified subset (for intensity mixing)', default='clean')
 
 
     return parser.parse_args(argv)

@@ -34,6 +34,19 @@ class Patch:
             pattern = 'utils/assets/flower.png'
         elif pattern in ['pokemon', 'Pokemon']:
             pattern = 'utils/assets/pokemon.png'
+        elif pattern in ['flowerhalf', 'FlowerHalf']:
+            pattern = 'utils/assets/flowerhalf.png'
+        elif pattern in ['flowerfan', 'FlowerFan']:
+            pattern = 'utils/assets/flowerfan.png'
+
+        elif pattern in ['ringw', 'RingW', 'RingWhite']:
+            pattern = 'utils/assets/ring_white.png'
+        elif pattern in ['ringb', 'RingB', 'RingBlack']:
+            pattern = 'utils/assets/ring_black.png'
+        elif pattern in ['ringws', 'RingWS', 'RingWhiteSolid']:
+            pattern = 'utils/assets/ring_white_solid.png'
+        elif pattern in ['ringbs', 'RingBS', 'RingBlackSolid']:
+            pattern = 'utils/assets/ring_black_solid.png'
 
         else:
             if isinstance(pattern, str):
