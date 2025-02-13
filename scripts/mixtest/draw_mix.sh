@@ -1,0 +1,1 @@
+python utils/scripts/draw_heatmap.py --name cross_badnets_mixmr0.1_0.05_resnet18 --N 10
