@@ -21,7 +21,7 @@ or run commands in `scripts/env.sh`. Please refer to the Artifact Appendix (to b
 
 Experiment with ResNet18 on CIFAR-10 require at least **8GB of RAM** and a **2GB NVIDIA GPU**. For other models and datasets, we recommend a machine with Linux operating system with 128GB of RAM and a 24GB NVIDIA GPU. 
 
-In our experiment setup, we use a server running Ubuntu 22.04.4 with 2$\times$ Intel Xeon Gold 6226R CPUs, 256GB of RAM, and 4$\times$ NVIDIA GeForce RTX 3090 GPUs. 
+In our experiment setup, we use a server running Ubuntu 22.04.4 with 2× Intel Xeon Gold 6226R CPUs, 256GB of RAM, and 4× NVIDIA GeForce RTX 3090 GPUs. 
 
 
 
