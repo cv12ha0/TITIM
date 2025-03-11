@@ -103,7 +103,7 @@ def defense(args, ds, ds_vals, model, model_dir, device):
                    reg_lambda=args.nc_reg_lambda, reg_name=args.nc_reg, patience=args.nc_patience, optimizer_name=args.optimizer, device=device)
         nc.outlier_detection()
         nc.show_one(0, 0, './', 'NCReverse_'+args.model_dir)
-        # nc.dump_stats(os.path.join('res', args.model_dir, 'NCReverse'))  # TODO: restore this
+        nc.dump_stats(os.path.join('res', args.model_dir, 'NCReverse'))
         # log
         name_cur = args.model_dir
         result = [name_cur] + nc.config['mad_ls'] + nc.config['l1_ls'] + nc.config['asr'] + [args.epochs, args.lr]

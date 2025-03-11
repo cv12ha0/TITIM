@@ -34,7 +34,7 @@ def train(args):
 
     if args.output_dir is None:
         args.output_dir = '_'.join([args.prefix, args.model, args.dataset, trigger.name, str(args.inject_ratio), 'e'+str(args.epochs), args.suffix]).strip('_')  
-    # overwrite all / overwrite failed / skip
+    # overwrite all / overwrite unfinished / skip
     if os.path.exists(os.path.join('res', args.output_dir)):
         if (args.mode in ['overwrite']) or (args.mode in ['cover'] and not os.path.exists(os.path.join('res', args.output_dir, 'stats.json'))):
             import shutil
@@ -49,8 +49,6 @@ def train(args):
     
     # model, freeze params if fine-tune
     model = get_model(args.model, args.img_shape, args.num_classes, device, )
-    # TODO: delete load model
-    # model.load_state_dict(torch.load('res/resnet18_cifar10_wanet_cr2.0_s0.5_k4_gs1.0_0.1_e200/weights/best.pth', map_location=device), strict=False)
     if args.pretrain:
         model.load_state_dict(torch.load('data/model/' + args.model + '.pth', map_location=device), strict=False)
     # model = torch.load('./res/googlenet_lr0.01_e40_cifar10_clean_rhf_cosann_sgd/model.pth', map_location='cuda:0')  # ./res/resnet18_lr1e-05_e20_mnist_clean_/model.pth

@@ -3,7 +3,7 @@ trigger=sig
 dataset=${2:-cifar10}  # cifar10 gtsrb
 model=${3:-resnet18}
 epochs=100
-ratio=${4:-0.1}
+ratio=${4:-0.05}
 delta=40
 f=6
 echo $(date +%Y-%m-%d_%H:%M:%S)

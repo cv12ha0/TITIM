@@ -35,12 +35,6 @@ class Log:
     def dump(self, output_dir):
         # save loss/acc/time
         with open(output_dir, 'a+') as f:
-            # TODO: delete me
-            # json.dump(dict(loss_train=self.loss_train, loss_acc=self.loss_acc, loss_asr=self.loss_asr,
-            #                acc=self.acc, asr=self.asr,
-            #                time_train=self.time_train, time_acc=self.time_acc, time_asr=self.time_asr,
-            #                stats=self.stats
-            #                ), f, indent=4)
             json.dump(self.get_dict())
         return
     
@@ -183,7 +177,6 @@ def get_nw(default=8, batch_size=8):
 
 def get_optimizer(optimizer_type, params, lr):
     from torch.optim import Adam, SGD, Adadelta
-    # TODO: add RMS, ...
     if optimizer_type.lower() in ['sgd']:
         return SGD(params, lr, weight_decay=5e-4, momentum=0.9)  # momentum=0.9
     elif optimizer_type.lower() in ['adam']:
@@ -197,7 +190,7 @@ def get_optimizer(optimizer_type, params, lr):
 def get_regularization(regularization=None):
     from torch.nn import L1Loss, MSELoss
     if regularization is None or regularization in ['None', 'none']:
-        return lambda arg0, arg2: 0  # TODO: 检查一下有没有效，或者要不要换成tensor
+        return lambda arg0, arg2: 0 
     elif regularization in ['l1', 'L1']:
         return L1Loss()
     elif regularization in ['l2', 'L2']:

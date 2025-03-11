@@ -143,7 +143,7 @@ class KArm:
                 loss_all += loss.item()
                 num_acc += torch.eq(torch.max(pre, dim=1)[1], batch_y.to(device)).sum().item()
                 num_total += batch_y.size(0)
-                mask_norm_ls.append(mask_norm.item())  # TODO: transform to [int]
+                mask_norm_ls.append(mask_norm.item())
                 prog_bar.desc = "K-Arm Optim {}tgt:({}, {}) epoch[{}/{}] loss:{:.4f} lr:{:.6f}" \
                     .format(verbose, victim, target, epoch + 1, epochs, loss, optimizer.state_dict()['param_groups'][0]['lr'])
             acc = num_acc / num_total  # ASR
@@ -206,14 +206,14 @@ class KArm:
             # pattern, mask, optimizer, dl, reg, times, es_cnt, best_mask_norm, *_ = arm_cur
             for step in range(warm_up):
                 acc, mask_norm = self.optimize_step_arm(model, arm_cur, regularization, criterion, epochs, device)
-                # self.status_dict[victim, target].update({'best_mask_norm': mask_norm, 'acc': acc})  # TODO: not used? 
+                # self.status_dict[victim, target].update({'best_mask_norm': mask_norm, 'acc': acc})
         print('warm up done. ')
 
         # optimize one arm per step
         prog_steps = tqdm(range(steps_total), file=sys.stdout, disable=False, leave=True, desc='K-Arm optimize: ')
         for step in prog_steps:
             # select an arm (k-arm scheduler)
-            if random.random() > epsilon:  # TODO: use numpy or torch
+            if random.random() > epsilon:
                 arm_ls, score_ls = [], []
                 for key in self.status_dict:
                     mask_norm, time = self.status_dict[key]['best_mask_norm'], self.status_dict[key]['times']
@@ -381,7 +381,6 @@ class KArm:
         print('K-Arm: all pattern saved to {}'.format(path))
 
     def plot_stats(self, path, sym=True, show=True):
-        # TODO: fix font size & colorBar
         import matplotlib.pyplot as plt
         import matplotlib.pylab as pylab
         import seaborn as sns

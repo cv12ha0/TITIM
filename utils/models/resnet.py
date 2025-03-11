@@ -127,12 +127,11 @@ class ResNet(nn.Module):
             self.avgpool = nn.AdaptiveAvgPool2d((1, 1))  # output size = (1, 1)
             self.fc = nn.Linear(512 * block.expansion, num_classes)
 
-        # TODO: backbone
         self.feature_pixels = 16
         self.feature_map_channels = 1024
         self.feature_vector_size = 2048
         self._feature_extractor = None  # self.features[0:-1]
-        self._pool_to_feature_layer = None  # self.classifier[0:-1]  # TODO: delete me
+        self._pool_to_feature_layer = None  # self.classifier[0:-1] 
 
         # initialize
         for m in self.modules():

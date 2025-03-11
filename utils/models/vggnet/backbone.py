@@ -65,12 +65,11 @@ class VGGNet(nn.Module):
         if init_weights:
             self._initialize_weights()
 
-        # TODO: backbone
         self.feature_pixels = 16
         self.feature_map_channels = 512
         self.feature_vector_size = 4096
         self._feature_extractor = None  # self.features[0:-1]
-        self._pool_to_feature_layer = None  # self.classifier[0:-1]  # TODO: delete me
+        self._pool_to_feature_layer = None  # self.classifier[0:-1]  
 
     def forward(self, x):
         x = self.features(x)
@@ -113,4 +112,4 @@ class VGGNet(nn.Module):
 
     def set_feature_exractor(self):
         self._feature_extractor = self.features[0:-1]
-        self._pool_to_feature_layer = self.classifier[0:-1]  # TODO: delete me
+        self._pool_to_feature_layer = self.classifier[0:-1] 

@@ -39,10 +39,10 @@ class WaNet:
         else:
             ins = torch.rand(1, 2, k, k) * 2 - 1
         ins = ins / torch.mean(torch.abs(ins))
-        noise_grid = F.upsample(ins, size=self.img_shape[1], mode="bicubic", align_corners=True).permute(0, 2, 3, 1)  # TODO: nn.functional.interpolate
+        noise_grid = F.upsample(ins, size=self.img_shape[1], mode="bicubic", align_corners=True).permute(0, 2, 3, 1)
         # generate identity grid
         array1d = torch.linspace(-1, 1, steps=self.img_shape[1])
-        x, y = torch.meshgrid(array1d, array1d)  # TODO: in an upcoming release, it will be required to pass the indexing argument
+        x, y = torch.meshgrid(array1d, array1d)
         identity_grid = torch.stack((y, x), 2)[None, ...]
 
         # gen grid applied
@@ -95,7 +95,6 @@ class WaNet:
 
     def visualize(self, path, verbose=''):
         # print('WaNet: all patterns saved to {}'.format(path))
-        print('WaNet: visualize todo.')
         pass
     
     @property

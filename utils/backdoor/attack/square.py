@@ -36,7 +36,7 @@ class Square:
 
     def construct_block(self, block_size=4, margin=1, color=None):
         channel, row, col = self.img_shape
-        color = [1]*channel  # TODO: if color is None else color
+        color = [1]*channel
         mask, pattern = np.zeros((row, col, 1)), np.zeros((row, col, channel))
 
         mask[row-margin-block_size:row-margin, col-margin-block_size:col-margin, :] = 1  # self.mask_ratio
@@ -58,5 +58,4 @@ class Square:
     @property
     def name(self):
         # square_r0.1_b4_m1_mr1
-        # TODO: add color
         return '_'.join(['square', 'b'+str(self.block_size), 'm'+str(self.margin), 'mr'+str(self.mask_ratio), ]).strip('_')

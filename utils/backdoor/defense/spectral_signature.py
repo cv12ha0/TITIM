@@ -53,7 +53,6 @@ class SpectralSignature:
                 suspicious_indices.append(indices_cur[i].item())
         suspicious_indices.sort()
 
-        # TODO: succ_rate calculation
         num_checked = np.sum(np.array(indices) < int(len(ds) * poison_rate))
         num_poison = torch.sum(indices_cur < int(len(ds) * poison_rate)).item()
         succ_rate = num_checked / num_poison

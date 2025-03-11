@@ -60,7 +60,6 @@ class ABL:
         indices = torch.argsort(losses)
         suspicious_indices = indices[:num_filter]
 
-        # TODO: succ_rate calculation
         if poison_rate is not None:
             num_poison = int(len(ds) * poison_rate)
             num_correct = torch.sum(suspicious_indices < num_poison).item()
@@ -75,7 +74,7 @@ class ABL:
 
 
     def unlearn():
-        # TODO: loss *= -1 for unlearning.
+        # loss *= -1 for unlearning.
         pass
 
 

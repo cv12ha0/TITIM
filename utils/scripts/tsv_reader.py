@@ -14,8 +14,8 @@ import seaborn as sns
 def main():
     warnings.filterwarnings("ignore", category=UserWarning)
     # tsv reader
-    fpath = 'logs/cross_badnets.tsv'  # logs/cross_badnets_gtsrb.tsv
-    title = 'resnet18_cifar10_badnets_b4_bn3_mrx_0.01'
+    fpath = 'logs/cross_badnets_square.tsv'  # logs/cross_badnets_gtsrb.tsv
+    title = 'resnet18_cifar10_badnets_b4_bn3_mrx_0.05'
     data = pd.read_csv(fpath, sep='\t')
     test_idx = 4
     tb_prefix = 'tmr'
@@ -63,6 +63,13 @@ def main():
     x_r = [i.lstrip(tb_prefix) for i in col[1:]]
     y_r = [tb[i][0].replace('\\', '') for i in range(len(tb))]
     data = np.array([tb[i][1:] for i in range(len(tb))])
+    
+    # trim to 9*9 as in Fig.6
+    print('Trimmed to 9×9')
+    data = data[-9:, -9:]
+    x_r, y_r = x_r[-9:], y_r[-9:]
+
+    os.makedirs('heatmaps', exist_ok=True)
     heatmap(data, x_r, y_r, fpath=title+'.pdf')
 
 def heatmap(data, x_r, y_r, dpi=500, title='', fpath='heatmap.png'):
@@ -73,8 +80,8 @@ def heatmap(data, x_r, y_r, dpi=500, title='', fpath='heatmap.png'):
     # plt.xticks(fontsize=6)
     # plt.yticks(fontsize=6)
     plt.title(title)  # badnets_gtsrb_r0.2
-    plt.savefig('logs/'+fpath, dpi=dpi, bbox_inches='tight')
-    # plt.cla()
+    plt.savefig('heatmaps/'+fpath, dpi=dpi, bbox_inches='tight')
+    print('Result saved to heatmaps/'+fpath)
     plt.clf()
 
 

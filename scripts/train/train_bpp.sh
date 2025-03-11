@@ -3,7 +3,7 @@ trigger=bpp
 dataset=${2:-cifar10}  # cifar10 gtsrb
 model=${3:-resnet18}  # vgg16
 epochs=100
-ratio=${4:-0.1}
+ratio=${4:-0.05}
 
 depth=7
 echo $(date +%Y-%m-%d_%H:%M:%S)

@@ -24,7 +24,7 @@ def train(args):
     args.num_workers = get_nw(args.num_workers)
     if args.output_dir is None:
         args.output_dir = '_'.join([args.prefix, args.model, args.dataset, args.subset, 'e'+str(args.epochs), args.suffix]).strip('_')  
-    # overwrite all / overwrite failed / skip
+    # overwrite all / overwrite unfinished / skip
     if os.path.exists(os.path.join('res', args.output_dir)):
         if (args.mode in ['overwrite']) or (args.mode in ['cover'] and not os.path.exists(os.path.join('res', args.output_dir, 'stats.json'))):
             import shutil

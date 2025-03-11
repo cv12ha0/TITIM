@@ -5,7 +5,7 @@ model=${3:-resnet18}
 epochs=100
 pattern=${4:-pokemon}
 mr=${5:-1.0}
-ratio=${6:-0.1}
+ratio=${6:-0.05}
 sz=7
 loc=25
 

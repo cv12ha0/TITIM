@@ -3,7 +3,7 @@ trigger=compress
 dataset=${2:-cifar10}  # cifar10 gtsrb
 model=${3:-resnet18}
 epochs=100
-ratio=${4:-0.1}
+ratio=${4:-0.05}
 alg=${5:-jpgpil}  # jpgcv
 echo $(date +%Y-%m-%d_%H:%M:%S)
 

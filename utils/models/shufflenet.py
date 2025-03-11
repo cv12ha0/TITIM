@@ -32,7 +32,6 @@ def shufflenetg3(img_shape, num_classes=1000):
     model.config.update({'model': 'ShuffleNetG3', })
     return model
 
-# TODO: fix g4 & g8
 def shufflenetg4(img_shape, num_classes=1000):
     model = ShuffleNet([272, 544, 1088], [4, 8, 4], 4, img_shape, num_classes, )
     model.config.update({'model': 'ShuffleNetG4', })

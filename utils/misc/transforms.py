@@ -259,7 +259,6 @@ class ODProcess:
         self.rf = RandomHorizontalFlip(1)
 
     def __call__(self, x, *args, **kwargs):
-        # TODO: image: channel_order, scaling(1/255)
         image, ann = x
         gt_boxes = ann['boxes']
         image, gt_boxes = self.scaling(image, gt_boxes)
