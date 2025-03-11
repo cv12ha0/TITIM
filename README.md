@@ -15,7 +15,7 @@ sudo apt-get install libmagickwand-dev
 pip install -r requirements.txt
 ```
 
-or run commands in `scripts/env.sh`. Please refer to the Artifact Appendix (to be updated) for more details. 
+or run commands in `scripts/env.sh`. Please refer to the [Artifact Appendix](./artifact_appendix.pdf) for more details. 
 
 #### Hardware Requirement
 
