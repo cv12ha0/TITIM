@@ -4,13 +4,55 @@ This repository is the source code for USENIX Security '25 paper "Revisiting Tra
 
 
 
-## Environment
+## Dependency
+
+#### Software Environment
 
 ```shell
+# dependency of wand
+sudo apt-get install libmagickwand-dev
+# conda/venv environment
 pip install -r requirements.txt
 ```
 
-or run commands in `scripts/env.sh`.
+or run commands in `scripts/env.sh`. Please refer to the Artifact Appendix (to be updated) for more details. 
+
+#### Hardware Requirement
+
+Experiment with ResNet18 on CIFAR-10 require at least **8GB of RAM** and a **2GB NVIDIA GPU**. For other models and datasets, we recommend a machine with Linux operating system with 128GB of RAM and a 24GB NVIDIA GPU. 
+
+In our experiment setup, we use a server running Ubuntu 22.04.4 with 2$\times$ Intel Xeon Gold 6226R CPUs, 256GB of RAM, and 4$\times$ NVIDIA GeForce RTX 3090 GPUs. 
+
+
+
+## File Structure
+
+```
+TITIM/
+├── data/				The clean/poisoned datasets & info
+│   ├── cifar10/
+│   └── ...
+├── logs/				Inference logs
+├── scripts/			Scripts for poisoning/training/inference/analysis
+├── res/				Results of training
+└── utils/
+    ├── assets/			Fixed image patterns of some attacks/defenses
+    ├── backdoor/		Implementations of attacks/defenses
+    │   ├── attack/
+    │   └── defense/
+    ├── datasets/		Dataset I/O
+    ├── misc/			Auxiliary methods (training, evaluation, etc.)
+    ├── models/			Commonly used model architectures
+    └── scripts/		Auxiliary python scripts
+```
+
+This repository consists of implemented backdoor attack and defense algorithms, along with corresponding scripts:
+
+1. **Backdoor Attack and Defense Algorithms** (`utils/backdoor/`): This module contains the implementations of the algorithms discussed in the paper. 
+2. **Poisoning/Training/Inference Scripts** (`scripts/`): This folder includes shell scripts that facilitate batch poisoning, training, inference, and dataset downloading.
+3. **Supporting Code** (`utils/...`): In addition to the backdoor attack and defense algorithms, the `utils` module also includes implementations for dataset I/O (`utils/datasets`), commonly used models architectures (`utils/models`), and various auxiliary methods (`utils/misc`). 
+
+Please refer to the [Zenodo](https://zenodo.org/records/14729436) repository for more details.
 
 
 
@@ -18,10 +60,10 @@ or run commands in `scripts/env.sh`.
 
 #### Generate datasets
 
-Obtain clean datasets: 
+Obtain clean datasets (or download from [Zenodo](https://zenodo.org/records/14729436)): 
 
  ```shell
- sh scripts/get_clean_datasets.sh
+sh scripts/get_clean_datasets.sh
  ```
 
 Then generate poisoned datasets by BadNets:
@@ -101,6 +143,6 @@ sh scripts/mixtest/crosstest_mix.sh  # inference with varying intensities
 The logs are saved to `logs/cross_badnets_mixmr0.1_0.05_resnet18.tsv` by default.
 
 
-## Cite thie work
+## Cite the work
 
 To be continued $\rightarrow$
