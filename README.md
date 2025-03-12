@@ -31,12 +31,13 @@ In our experiment setup, we use a server running Ubuntu 22.04.4 with 2× Intel X
 
 ```
 TITIM/
-├── data/           The clean/poisoned datasets & info
+├── data/               The clean/poisoned datasets & info
 │   ├── cifar10/
 │   └── ...
-├── logs/           Inference logs
+├── heatmaps/           Plotted heatmaps
+├── logs/               Inference logs
 ├── scripts/            Scripts for poisoning/training/inference/analysis
-├── res/            Results of training
+├── res/                Results of training
 └── utils/
     ├── assets/         Fixed image patterns of some attacks/defenses
     ├── backdoor/       Implementations of attacks/defenses
