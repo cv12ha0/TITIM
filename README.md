@@ -31,13 +31,12 @@ In our experiment setup, we use a server running Ubuntu 22.04.4 with 2× Intel X
 
 ```
 TITIM/
-├── data/               The clean/poisoned datasets & info
+├── data/           The clean/poisoned datasets & info
 │   ├── cifar10/
 │   └── ...
-├── heatmaps/           Plotted heatmaps
-├── logs/               Inference logs
+├── logs/           Inference logs
 ├── scripts/            Scripts for poisoning/training/inference/analysis
-├── res/                Results of training
+├── res/            Results of training
 └── utils/
     ├── assets/         Fixed image patterns of some attacks/defenses
     ├── backdoor/       Implementations of attacks/defenses
@@ -61,7 +60,7 @@ Please refer to the [Zenodo](https://zenodo.org/records/14729436) repository for
 
 ## Usage
 
-#### Generate datasets
+### Generate datasets
 
 Obtain clean datasets (or download from [Zenodo](https://zenodo.org/records/14729436)): 
 
@@ -69,81 +68,128 @@ Obtain clean datasets (or download from [Zenodo](https://zenodo.org/records/1472
 sh scripts/get_clean_datasets.sh
  ```
 
-Then generate poisoned datasets by BadNets:
+Then generate poisoned datasets by BadNets (Square) with varying intensities:
 
 ```shell
-sh scripts/inject.sh
+sh scripts/inject/inject_badnets_square.sh
 ```
 
-The poisoned datasets are saved to `data/<dataset>/<subset>/`.
+Or generate a single poisoned set:
+
+```shell
+# --dataset: 	Name of the dataset (cifar10/mnist/gtsrb/celeba8)
+# --target:		Index of the target class
+# --ratio:		Poisoning ratio (0.0~1.0)
+# --trigger:	Name of the attack (badnets/blended/sig/...)
+# --split_val:	The split for evaluation
+python inject.py --dataset cifar10 --target 0 --ratio 0.05 --trigger badnets \
+--mr 1.0 --block_size 4 --fixed --split_val test
+```
+
+The poisoned datasets are saved to `data/<dataset>/<subset>/`. Each subset folder contains JSON files with info about the dataset and the trigger (`stats.json` & `trigger_config.json`), along with the dataset in `.pkl` format, separated by splits (e.g., `train.pkl` & `test.pkl`). 
+
+You can adjust the CLI arguments to experiment with different datasets or triggers. We also provide scripts for more attacks under `scripts/inject/`. Please refer to `inject.py` or run `python inject.py --help` for more arguments information about specific attacks.
 
 
 
-#### Train models
+### Train models
 
 We provide shell scripts for training models with different trigger intensities: 
 
 ```shell
-# sh scripts/train/train_<attack>.sh <device> <dataset> <model> <poison>
-sh scripts/train/train_badnets.sh 0 cifar10 resnet18 0.01
+# sh scripts/train/train_<attack>.sh <device> <dataset> <model> <poison_ratio>
+sh scripts/train/train_badnets_square.sh 0 cifar10 resnet18 0.05
 ```
 
 Or train a single model:
 
 ```shell
-python train.py --gpu 0 --model resnet18 --dataset cifar10 \
---subset clean --epochs 100 --bs 128 --lr 1e-2 --optimizer adam --disable_prog
+# --gpu: 		GPU index to run on
+# --model:		Model architecture to use (refer to utils/models/__init__.py for more info)
+# --dataset: 	Name of the dataset (cifar10/mnist/gtsrb/celeba8)
+# --subset: 	Poisoned dataset to train on (folder names in data/<dataset>/)
+python train.py --gpu 0 --model resnet18 --dataset cifar10 --subset clean \
+--epochs 100 --bs 128 --lr 1e-2 --optimizer adam --disable_prog
 ```
 
+The trained models are saved to `res/<model>/`. Each folder contains the trained weights (`weights/`), training logs (`results.csv` & `stats.json`), and visualizations (e.g., `acc.png`).
+
+We also provide scripts for more attacks under `scripts/train/`.Please refer to `train.py` or run `python train.py --help` for more arguments information.
 
 
-#### Inference
+
+### Inference
 
 Test backdoored models on different poisoned datasets:
 
 ```shell
 # sh scripts/cross_tests.sh <device> <dataset> <model>
-sh scripts/cross_tests.sh 0 cifar10 resnet18
+sh scripts/inference/crosstest_badnets_square.sh 0 cifar10 resnet18
 ```
 
-The results are saved to `./logs/cross_<attack>.tsv`
+Or evaluate a model on a single poisoned dataset:
+
+```shell
+# --gpu: 		GPU index to run on
+# --model_dir:	Model evaluate (folder names in res/)
+# --dataset: 	Name of the dataset (cifar10/mnist/gtsrb/celeba8)
+# --subset: 	Poisoned dataset to evaluate (folder names in data/<dataset>/)
+# --log: 		Log file name
+# --name:		Name of record to appear in the log
+python evaluate.py --gpu 0 --model_dir ./res/resnet18_cifar10_badnets_b4_bn3_ppt1_mr1.0_0.05_e100 \
+--dataset cifar10 --subset badnets_b4_bn3_ppt1_mr1.0_0.05 --split test --log cross_badnets_square.tsv \
+--name resnet18_cifar10_badnets_b4_bn3_ppt1_mr1.0_0.05_e100
+```
+
+The results are saved to `./logs/` as a TSV file with two columns: name and ASR/ACC.
+
+We also provide scripts for more attacks under `scripts/inference/`.Please refer to `evaluate.py` or run `python evaluate.py --help` for more arguments information.
 
 
 
-#### Visualization
+### Visualization
 
 Draw heatmaps:
 
 ```shell
+# --name 		Log file name in logs/
+# --N			Heatmap size, auto calculate by default
+python utils/scripts/draw_heatmap.py --name resnet18_cifar10_badnets_b4_bn3_mrx_0.05 --N 10
+# or for the badnets(square) demo
 python utils/scripts/tsv_reader.py
 ```
 
-This scripts may need to be modified for other attacks / datasets.
+Note that this scripts may need to be modified for other attacks / datasets.
 
 
-#### Defenses
+
+
+### Defenses
 
 Test backdoor defenses on poisoned datasets / models:
 
 ```shell
 # sh scripts/defenses/defense_<defense>.sh <device> <dataset> <model> <...>
-sh scripts/defense_abl.sh 0 cifar10 resnet18
+sh scripts/defenses/defense_abl.sh 0 cifar10 resnet18
 ```
 
-The arguments may vary between different defenses, please refer to the corresponding scripts. 
+The arguments may vary between different defenses, please refer to the corresponding scripts in `script/defenses`. 
 
 
-#### Intensity Mixing
+
+
+### Intensity Mixing
 
 To train backdoored models with two intensities by BadNets(Square)
 
 ```shell
-sh scripts/mixtest/inject_mix.sh  # generate poisoned datasets
-sh scripts/mixtest/train_mix.sh  # train backdoored models
-sh scripts/mixtest/crosstest_mix.sh  # inference with varying intensities
+sh scripts/mixtest/inject_mix.sh  		# generate poisoned datasets
+sh scripts/mixtest/train_mix.sh  		# train backdoored models
+sh scripts/mixtest/crosstest_mix.sh  	# inference with varying intensities
+sh scripts/mixtest/draw_mix.sh  		# draw the heatmap
 ```
 
-The logs are saved to `logs/cross_badnets_mixmr0.1_0.05_resnet18.tsv` by default.
+The logs are saved to `logs/cross_badnets_mixmr0.1_0.05_resnet18.tsv`, and the heatmaps are saved to `heatmaps/cross_badnets_mixmr0.1_0.05_resnet18.pdf`.
 
 
 
@@ -172,12 +218,12 @@ Here are some workarounds for potential issues. Please feel free to open an issu
    If you get errors with Gdown while downloading CelebA dataset using `get_clean_datasets.sh`, you can manually download the datasets from the following links and place them in the `data/offic/celeba/` directory:
 
    ```apache
-   https://drive.google.com/uc?id=0B7EVK8r0v71pZjFTYXZWM3FlRnM 		img_align_celeba.zip
-   https://drive.google.com/uc?id=0B7EVK8r0v71pblRyaVFSWGxPY0U 		list_attr_celeba.txt
-   https://drive.google.com/uc?id=1_ee_0u7vcNLOfNLegJRHmolfH5ICW-XS 	identity_CelebA.txt
-   https://drive.google.com/uc?id=0B7EVK8r0v71pbThiMVRxWXZ4dU0 		list_bbox_celeba.txt
-   https://drive.google.com/uc?id=0B7EVK8r0v71pd0FJY3Blby1HUTQ 		list_landmarks_align_celeba.txt
-   https://drive.google.com/uc?id=0B7EVK8r0v71pY0NSMzRuSXJEVkk 		list_eval_partition.txt
+   https://drive.google.com/uc?id=0B7EVK8r0v71pZjFTYXZWM3FlRnM       img_align_celeba.zip
+   https://drive.google.com/uc?id=0B7EVK8r0v71pblRyaVFSWGxPY0U       list_attr_celeba.txt
+   https://drive.google.com/uc?id=1_ee_0u7vcNLOfNLegJRHmolfH5ICW-XS  identity_CelebA.txt
+   https://drive.google.com/uc?id=0B7EVK8r0v71pbThiMVRxWXZ4dU0       list_bbox_celeba.txt
+   https://drive.google.com/uc?id=0B7EVK8r0v71pd0FJY3Blby1HUTQ       list_landmarks_align_celeba.txt
+   https://drive.google.com/uc?id=0B7EVK8r0v71pY0NSMzRuSXJEVkk       list_eval_partition.txt
    ```
 
    Then run `python utils/scripts/dataset_get_clean.py --dataset celeba8` again, and the clean dataset will be processed automatically.
