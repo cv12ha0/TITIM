@@ -31,12 +31,12 @@ In our experiment setup, we use a server running Ubuntu 22.04.4 with 2× Intel X
 
 ```
 TITIM/
-├── data/           The clean/poisoned datasets & info
+├── data/               The clean/poisoned datasets & info
 │   ├── cifar10/
 │   └── ...
-├── logs/           Inference logs
+├── logs/               Inference logs
 ├── scripts/            Scripts for poisoning/training/inference/analysis
-├── res/            Results of training
+├── res/                Results of training
 └── utils/
     ├── assets/         Fixed image patterns of some attacks/defenses
     ├── backdoor/       Implementations of attacks/defenses
@@ -77,11 +77,11 @@ sh scripts/inject/inject_badnets_square.sh
 Or generate a single poisoned set:
 
 ```shell
-# --dataset: 	Name of the dataset (cifar10/mnist/gtsrb/celeba8)
-# --target:		Index of the target class
-# --ratio:		Poisoning ratio (0.0~1.0)
-# --trigger:	Name of the attack (badnets/blended/sig/...)
-# --split_val:	The split for evaluation
+# --dataset: 	    Name of the dataset (cifar10/mnist/gtsrb/celeba8)
+# --target:    	    Index of the target class
+# --ratio:    	    Poisoning ratio (0.0~1.0)
+# --trigger:	    Name of the attack (badnets/blended/sig/...)
+# --split_val:	    The split for evaluation
 python inject.py --dataset cifar10 --target 0 --ratio 0.05 --trigger badnets \
 --mr 1.0 --block_size 4 --fixed --split_val test
 ```
@@ -104,10 +104,10 @@ sh scripts/train/train_badnets_square.sh 0 cifar10 resnet18 0.05
 Or train a single model:
 
 ```shell
-# --gpu: 		GPU index to run on
-# --model:		Model architecture to use (refer to utils/models/__init__.py for more info)
-# --dataset: 	Name of the dataset (cifar10/mnist/gtsrb/celeba8)
-# --subset: 	Poisoned dataset to train on (folder names in data/<dataset>/)
+# --gpu:    	    GPU index to run on
+# --model:    	    Model architecture to use (refer to utils/models/__init__.py for more info)
+# --dataset:        Name of the dataset (cifar10/mnist/gtsrb/celeba8)
+# --subset:         Poisoned dataset to train on (folder names in data/<dataset>/)
 python train.py --gpu 0 --model resnet18 --dataset cifar10 --subset clean \
 --epochs 100 --bs 128 --lr 1e-2 --optimizer adam --disable_prog
 ```
@@ -130,12 +130,12 @@ sh scripts/inference/crosstest_badnets_square.sh 0 cifar10 resnet18
 Or evaluate a model on a single poisoned dataset:
 
 ```shell
-# --gpu: 		GPU index to run on
-# --model_dir:	Model evaluate (folder names in res/)
-# --dataset: 	Name of the dataset (cifar10/mnist/gtsrb/celeba8)
-# --subset: 	Poisoned dataset to evaluate (folder names in data/<dataset>/)
-# --log: 		Log file name
-# --name:		Name of record to appear in the log
+# --gpu:            GPU index to run on
+# --model_dir:      Model evaluate (folder names in res/)
+# --dataset:        Name of the dataset (cifar10/mnist/gtsrb/celeba8)
+# --subset:         Poisoned dataset to evaluate (folder names in data/<dataset>/)
+# --log:            Log file name
+# --name:           Name of record to appear in the log
 python evaluate.py --gpu 0 --model_dir ./res/resnet18_cifar10_badnets_b4_bn3_ppt1_mr1.0_0.05_e100 \
 --dataset cifar10 --subset badnets_b4_bn3_ppt1_mr1.0_0.05 --split test --log cross_badnets_square.tsv \
 --name resnet18_cifar10_badnets_b4_bn3_ppt1_mr1.0_0.05_e100
@@ -152,11 +152,9 @@ We also provide scripts for more attacks under `scripts/inference/`.Please refer
 Draw heatmaps:
 
 ```shell
-# --name 		Log file name in logs/
-# --N			Heatmap size, auto calculate by default
+# --name 	    Log file name in logs/
+# --N		    Heatmap size, auto calculate by default
 python utils/scripts/draw_heatmap.py --name resnet18_cifar10_badnets_b4_bn3_mrx_0.05 --N 10
-# or for the badnets(square) demo
-python utils/scripts/tsv_reader.py
 ```
 
 Note that this scripts may need to be modified for other attacks / datasets.
@@ -183,10 +181,10 @@ The arguments may vary between different defenses, please refer to the correspon
 To train backdoored models with two intensities by BadNets(Square)
 
 ```shell
-sh scripts/mixtest/inject_mix.sh  		# generate poisoned datasets
-sh scripts/mixtest/train_mix.sh  		# train backdoored models
-sh scripts/mixtest/crosstest_mix.sh  	# inference with varying intensities
-sh scripts/mixtest/draw_mix.sh  		# draw the heatmap
+sh scripts/mixtest/inject_mix.sh        # generate poisoned datasets
+sh scripts/mixtest/train_mix.sh         # train backdoored models
+sh scripts/mixtest/crosstest_mix.sh     # inference with varying intensities
+sh scripts/mixtest/draw_mix.sh          # draw the heatmap
 ```
 
 The logs are saved to `logs/cross_badnets_mixmr0.1_0.05_resnet18.tsv`, and the heatmaps are saved to `heatmaps/cross_badnets_mixmr0.1_0.05_resnet18.pdf`.
